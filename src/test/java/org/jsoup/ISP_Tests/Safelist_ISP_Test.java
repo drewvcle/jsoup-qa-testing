@@ -4,10 +4,18 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+//add these to all java files
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Attribute;
+import org.jsoup.nodes.Attributes;
+import org.jsoup.nodes.Element;
+import org.jsoup.parser.ParseSettings;
+import org.jsoup.safety.Cleaner;
+import org.jsoup.safety.Safelist;
+import org.jsoup.select.Selector;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import main.java.org.jsoup.safety.Safelist;
 
 
 public class Safelist_ISP_Test {
@@ -17,10 +25,10 @@ public class Safelist_ISP_Test {
     @Test
     public void removeProtocols_validTagTrue_validAttributeTrue_validProtocolTrue_protocolInRuleOnce() {
         Safelist safelist = new Safelist().addTags("a").addAttributes("a", "href").addProtocols("a", "href", "https");
-        Element element = new Element("a").attr("href", "javascript:alert(1)");
+        Element element = new Element("a").attr("href", "javascript:confirm('coe891')");
         safelist.removeProtocols("a", "href", "https");
 
-        assertTrue(safelist.isSafeAttribute("a", element, new Attribute("href", "javascript:alert(1)")));
+        assertTrue(safelist.isSafeAttribute("a", element, new Attribute("href", "javascript:confirm('coe891')")));
     }
 
     @DisplayName("Safelist.removeProtocols (F, T, T, Once)")
@@ -48,20 +56,20 @@ public class Safelist_ISP_Test {
     @Test
     public void removeProtocols_validTagTrue_validAttributeTrue_validProtocolTrue_protocolInRuleNone() {
         Safelist safelist = new Safelist().addTags("a").addAttributes("a", "href").addProtocols("a", "href", "http");
-        Element element = new Element("a").attr("href", "https://example.com");
+        Element element = new Element("a").attr("href", "https://tmu.ca");
         safelist.removeProtocols("a", "href", "ftp");
 
-        assertFalse(safelist.isSafeAttribute("a", element, new Attribute("href", "https://example.com")));
+        assertFalse(safelist.isSafeAttribute("a", element, new Attribute("href", "https://tmu.ca")));
     }
 
     @DisplayName("Safelist.removeProtocols (T, T, T, Multiple)")
     @Test
     public void removeProtocols_validTagTrue_validAttributeTrue_validProtocolTrue_protocolInRuleMultiple() {
         Safelist safelist = new Safelist().addTags("a").addAttributes("a", "href").addProtocols("a", "href", "http", "https");
-        Element element = new Element("a").attr("href", "https://example.com");
+        Element element = new Element("a").attr("href", "https://tmu.ca");
         safelist.removeProtocols("a", "href", "https");
 
-        assertFalse(safelist.isSafeAttribute("a", element, new Attribute("href", "https://example.com")));
+        assertFalse(safelist.isSafeAttribute("a", element, new Attribute("href", "https://tmu.ca")));
     }
 
     // isSafeAttribute() tests
@@ -69,18 +77,18 @@ public class Safelist_ISP_Test {
     @Test
     public void isSafeAttribute_attributeEnabledForTagTrue_enforcementUsedFalse_elementInProtocolTrue() {
         Safelist safelist = new Safelist().addTags("a").addAttributes("a", "href").addProtocols("a", "href", "https");
-        Element element = new Element("a").attr("href", "https://example.com");
+        Element element = new Element("a").attr("href", "https://tmu.ca");
 
-        assertTrue(safelist.isSafeAttribute("a", element, new Attribute("href", "https://example.com")));
+        assertTrue(safelist.isSafeAttribute("a", element, new Attribute("href", "https://tmu.ca")));
     }
 
     @DisplayName("Safelist.isSafeAttribute (F, F, T)")
     @Test
     public void isSafeAttribute_attributeEnabledForTagFalse_enforcementUsedFalse_elementInProtocolTrue() {
         Safelist safelist = new Safelist().addTags("a").addAttributes("a", "href").addProtocols("a", "href", "https");
-        Element element = new Element("a").attr("src", "https://example.com");
+        Element element = new Element("a").attr("src", "https://tmu.ca");
 
-        assertFalse(safelist.isSafeAttribute("a", element, new Attribute("src", "https://example.com")));
+        assertFalse(safelist.isSafeAttribute("a", element, new Attribute("src", "https://tmu.ca")));
     }
 
     @DisplayName("Safelist.isSafeAttribute (T, T, T)")

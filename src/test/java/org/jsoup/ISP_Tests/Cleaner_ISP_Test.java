@@ -4,11 +4,17 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Attributes;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.parser.ParseSettings;
+import org.jsoup.safety.Cleaner;
+import org.jsoup.safety.Safelist;
+import org.jsoup.select.Selector;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import main.java.org.jsoup.Jsoup;
-import main.java.org.jsoup.safety.Safelist;
 
 
 public class Cleaner_ISP_Test {
@@ -54,7 +60,7 @@ public class Cleaner_ISP_Test {
     public void isValidBodyHtml_htmlBodyIsParseableFalse_htmlBodyIsCleanTrue() {
         Cleaner cleaner = new Cleaner(Safelist.basic());
 
-        assertFalse(cleaner.isValidBodyHtml("<a href='https://example.com'>test"));
+        assertFalse(cleaner.isValidBodyHtml("<a href='https://tmu.ca'>test"));
     }
 
     @DisplayName("Cleaner.isValidBodyHtml (T, F)")
@@ -62,6 +68,6 @@ public class Cleaner_ISP_Test {
     public void isValidBodyHtml_htmlBodyIsParseableTrue_htmlBodyIsCleanFalse() {
         Cleaner cleaner = new Cleaner(Safelist.basic());
 
-        assertFalse(cleaner.isValidBodyHtml("<script>alert(1)</script>"));
+        assertFalse(cleaner.isValidBodyHtml("<script>malware</script>"));
     }
 }
