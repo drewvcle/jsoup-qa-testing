@@ -6,9 +6,18 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import main.java.org.jsoup.parser.ParseSettings;
+//import main.java.org.jsoup.parser.ParseSettings;
 
+import org.jsoup.parser.ParseSettings;
 
+//add these to all java files
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Attributes;
+import org.jsoup.nodes.Element;
+import org.jsoup.parser.ParseSettings;
+import org.jsoup.safety.Cleaner;
+import org.jsoup.safety.Safelist;
+import org.jsoup.select.Selector;
 public class Attributes_ISP_Test {
 
     // Attributes.deduplicate() tests
