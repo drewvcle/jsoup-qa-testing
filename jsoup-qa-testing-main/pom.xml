@@ -1,0 +1,166 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>coe891</groupId>
+  <artifactId>jsoupqatesting</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>jsoupqatesting</name>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
+  </properties>
+
+  <dependencies>
+    <!-- JUnit 5 -->
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>5.11.0</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>5.11.0</version>
+      <scope>test</scope>
+    </dependency>
+    <!-- jsoup source dependency -->
+    <dependency>
+      <groupId>org.jspecify</groupId>
+      <artifactId>jspecify</artifactId>
+      <version>1.0.0</version>
+      <scope>provided</scope>
+    </dependency>
+    
+    <!-- ChatUniTest starter -->
+	<dependency>
+	  <groupId>io.github.ZJU-ACES-ISE</groupId>
+	  <artifactId>chatunitest-starter</artifactId>
+	  <version>1.4.0</version>
+	  <type>pom</type>
+	  <exclusions>
+	    <exclusion>
+	      <groupId>org.junit.vintage</groupId>
+	      <artifactId>junit-vintage-engine</artifactId>
+	    </exclusion>
+	    <exclusion>
+	      <groupId>junit</groupId>
+	      <artifactId>junit</artifactId>
+	    </exclusion>
+	  </exclusions>
+	</dependency>
+
+    <!-- jsoup source dependency -->
+    <dependency>
+      <groupId>com.google.re2j</groupId>
+      <artifactId>re2j</artifactId>
+      <version>1.8</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.13.0</version>
+        <configuration>
+          <source>11</source>
+          <target>11</target>
+        </configuration>
+      </plugin>
+      
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.3.0</version>
+        <dependencies>
+          <dependency>
+            <groupId>org.apache.maven.surefire</groupId>
+            <artifactId>surefire-junit-platform</artifactId>
+            <version>3.3.0</version>
+          </dependency>
+        </dependencies>
+        <configuration>
+          <useModulePath>false</useModulePath>
+          <includes>
+            <include>**/*Test.java</include>
+            <include>**/*Tests.java</include>
+            <include>**/*TestCase.java</include>
+            <include>**/*Suite.java</include>
+          </includes>
+        </configuration>
+      </plugin>
+      
+      
+      
+      <plugin>
+        <groupId>io.github.zju-aces-ise</groupId>
+        <artifactId>chatunitest-maven-plugin</artifactId>
+        <version>2.1.1</version> <!-- or latest -->
+        <configuration>
+          <!-- Dummy key: required by plugin but ignored by Ollama -->
+          <apiKeys>dummy-key</apiKeys>
+          <!-- Model name supported by both ChatUniTest and Ollama -->
+          <model>codeqwen:v1.5-chat</model>
+          <!-- Local OpenAI-compatible endpoint from Ollama -->
+          <url>http://localhost:11434/v1/chat/completions</url>
+          <!-- Optional: number of tests per method (default is 5) -->
+          <!-- <testNumber>6</testNumber> -->
+        </configuration>
+      </plugin>
+		<plugin>
+        <groupId>org.pitest</groupId>
+        <artifactId>pitest-maven</artifactId>
+        <version>1.22.1</version>
+        <dependencies>
+            <dependency>
+                <groupId>org.pitest</groupId>
+                <artifactId>pitest-junit5-plugin</artifactId>
+                <version>1.2.3</version>
+            </dependency>
+        </dependencies>
+        <configuration>
+            <targetClasses>
+                <param>org.jsoup.nodes.Element</param>
+                <param>org.jsoup.nodes.Attributes</param>
+                <param>org.jsoup.safety.Cleaner</param>
+                <param>org.jsoup.safety.Safelist</param>
+                <param>org.jsoup.select.Selector</param>
+            </targetClasses>
+
+            <targetTests>
+                <param>org.jsoup.nodes.Element_Child_Manual_Test</param>
+                <param>org.jsoup.nodes.Element_child_25_1_Test</param>
+                <param>org.jsoup.nodes.Attributes_put_Manual_Test</param>
+                <param>org.jsoup.nodes.Attributes_put_9_0_Test</param>
+                <param>org.jsoup.nodes.Mutation_Extra_Nodes_Test</param>
+
+                <param>org.jsoup.safety.Cleaner_isValidBodyHtml_Manual_Test</param>
+                <param>org.jsoup.safety.Cleaner_isValidBodyHtml_2_0_Test</param>
+                <param>org.jsoup.safety.Mutation_Extra_Safety_Test</param>
+
+                <param>org.jsoup.select.Mutation_Extra_Selector_Test</param>
+            </targetTests>
+
+            <junit5PluginVersion>1.2.3</junit5PluginVersion>
+
+            <excludedTestClasses>
+                <param>*Suite</param>
+                <param>*_Suite</param>
+            </excludedTestClasses>
+
+            <outputFormats>
+                <param>HTML</param>
+            </outputFormats>
+
+            <verbose>true</verbose>
+        </configuration>
+    </plugin>
+    </plugins>
+  </build>
+</project>
